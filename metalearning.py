@@ -1,19 +1,10 @@
 import csv
-import numpy as np
-import random
 
-from itertools import cycle
 from math import sqrt
-from scipy import interp
-
 from sklearn import svm, tree
-
 from sklearn.ensemble import VotingClassifier, AdaBoostClassifier, BaggingClassifier
-from sklearn.metrics import roc_curve, auc
-from sklearn.model_selection import train_test_split
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.preprocessing import label_binarize
 
 
 training_set = []
