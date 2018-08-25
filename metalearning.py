@@ -1,22 +1,20 @@
-import random
 import csv
-from math import sqrt
-
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn import svm
-from sklearn import tree
-
 import numpy as np
-import matplotlib.pyplot as plt
+import random
+
 from itertools import cycle
-from sklearn import svm, datasets
-from sklearn.metrics import roc_curve, auc
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import label_binarize
-from sklearn.multiclass import OneVsRestClassifier
+from math import sqrt
 from scipy import interp
 
+from sklearn import svm, tree
+
 from sklearn.ensemble import VotingClassifier, AdaBoostClassifier, BaggingClassifier
+from sklearn.metrics import roc_curve, auc
+from sklearn.model_selection import train_test_split
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import label_binarize
+
 
 training_set = []
 training_set_classification = []
@@ -336,7 +334,7 @@ def calculateStatistics(predictions):
             classified_as_anom_count = classified_as_anom_count + 1
 
     wright_anom_count = 0
-    global normal_flows_count, anom_flows_count
+    # global normal_flows_count, anom_flows_count
     for i in range(normal_flows_count, normal_flows_count + anom_flows_count):
         if predictions[i] == 1:
             wright_anom_count = wright_anom_count + 1
@@ -352,7 +350,7 @@ def calculateStatistics(predictions):
 
     # Recall é porcentagem de positivos que conseguimos acertar
     # 5 está hardcoded -> numero de fluxos anomalos no evaluation set
-    global anom_flows_count
+    # global anom_flows_count
     recall = wright_anom_count / anom_flows_count
 
     # Precision é a porcentagem das previsões positivas que está correta
@@ -371,36 +369,6 @@ def calculateStatistics(predictions):
     true_positives = wright_anom_count
     # Retorna uma lista com todas as estatísticas
     return [false_negatives, false_positives, true_negatives, true_positives, recall, precision, accuracy, error_rate]
-
-
-def rocCurve(predictions, real_classification):
-    score = np.array(predictions)
-    y = np.array(real_classification)
-
-    roc_x = []
-    roc_y = []
-    min_score = min(score)
-    max_score = max(score)
-    thr = np.linspace(min_score, max_score, 30)
-    FP=0
-    TP=0
-    N = sum(y)
-    P = len(y) - N
-
-    for (i, T) in enumerate(thr):
-        for i in range(0, len(score)):
-            if (score[i] > T):
-                if (y[i]==1):
-                    TP = TP + 1
-                if (y[i]==0):
-                    FP = FP + 1
-        roc_x.append(FP/float(N))
-        roc_y.append(TP/float(P))
-        FP=0
-        TP=0
-
-    plt.scatter(roc_x, roc_y)
-    plt.show()
 
 
 def voting(evaluation_set):
