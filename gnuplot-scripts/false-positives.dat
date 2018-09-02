@@ -1,0 +1,8 @@
+met mart sdev mreal sdev
+Voting 0.08 0.3919 0.0 0.0
+AdaBoost	0.08 0.3919 0.0 0.0
+Bagging	0.12 0.4308 0.0 0.0
+Stacking	0.08 0.3919 0.0 0.0
+SVM	0.08 0.3919 0.0 0.0
+KNN	0.08 0.3919 0.0 0.0
+Decision-Tree 0.08 0.3919 0.0 0.0
