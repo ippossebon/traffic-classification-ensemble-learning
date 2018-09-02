@@ -1,0 +1,42 @@
+set terminal x11
+set xtics ("Voting" 0.25, "AdaBoost" 1.75, "Bagging" 3.25, "Stacking" 4.75, "SVM" 6.25, "KNN" 7.75, "Decision Tree" 9.25)
+
+set boxwidth 0.5
+set style fill solid
+
+set style circle radius graph 0.02
+set style ellipse size graph 0.05, 0.03 angle 0 units xy
+
+
+set grid xtics 0.2
+set grid ytics 0.2
+set grid layerdefault lt 0 linecolor 0 linewidth 0.1 dashtype solid,  lt 0 linecolor 0 linewidth 0.1 dashtype solid
+unset raxis
+set theta counterclockwise right
+set style parallel front  lt black linewidth 2.000 dashtype solid
+
+
+set style textbox transparent margins  1.0,  1.0 border  lt -1 linewidth  1.0
+set xtics border in scale 1,0.1 mirror norotate  autojustify
+set view 60, 30, 1, 1
+
+set mapping cartesian
+set datafile separator whitespace
+set locale "C"
+
+set ytics  norangelimit 1.1
+set ytics border in scale 1,0.5 mirror norotate  autojustify
+set xtics border in scale 1,0.5 mirror norotate  autojustify
+set origin 0,0
+
+set title "Results Accuracy"
+set title  font "" norotate
+
+set xlabel "Technique"
+set xlabel  font "" textcolor lt -1 norotate
+set ylabel "Accuracy"
+set ylabel  font "" textcolor lt -1 rotate
+
+
+plot 'acc.dat' every 2    using 1:2 with boxes ls 1 title "Real data",\
+     'acc.dat' every 2::1 using 1:2 with boxes ls 2 title "Artificial data"

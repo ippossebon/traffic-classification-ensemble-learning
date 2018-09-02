@@ -1,0 +1,20 @@
+set terminal x11
+set xtics ("Voting" 0.25, "AdaBoost" 1.75, "Bagging" 3.25, "Stacking" 4.75, "SVM" 6.25, "KNN" 7.75, "Decision Tree" 9.25)
+
+set boxwidth 0.5
+set style fill solid
+
+set style circle radius graph 0.02
+set style ellipse size graph 0.05, 0.03 angle 0 units xy
+
+set title "Results Accuracy"
+set title  font "" norotate
+
+set xlabel "Technique"
+set xlabel  font "" textcolor lt -1 norotate
+set ylabel "Accuracy"
+set ylabel  font "" textcolor lt -1 rotate
+
+
+plot 'acc.dat' every 2    using 1:2 with boxes lc rgb 'blue' title "Real data",\
+     'acc.dat' every 2::1 using 1:2 with boxes lc rgb 'red' title "Artificial data"
