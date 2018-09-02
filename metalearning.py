@@ -612,5 +612,12 @@ def dadosAndersonSelectEvaluationSet(percentage):
 
 
 
+def crossValidation():
+    kf = KFold(10, n_folds = 10, shuffle=True)
+
+    for train_set,test_set in kf:
+        print(train_set, test_set)
+        # Se funcionar assim mesmo, eu posso chamar as funções e ja ir coletando as estatiscticas aqui mesmo.§
+
 if __name__ == '__main__':
     main()
