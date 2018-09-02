@@ -1,13 +1,14 @@
 import csv
+import time
 
 from math import sqrt
+from random import shuffle
 from sklearn import svm, tree
 from sklearn.ensemble import VotingClassifier, AdaBoostClassifier, BaggingClassifier
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import KFold, cross_val_score
+from sklearn.model_selection import KFold
 
-from random import shuffle
 
 '''
 Dados reais - 107 flows
@@ -450,4 +451,6 @@ def decisionTree(evaluation_set):
 
 
 if __name__ == '__main__':
+    start_time = time.time()
     main()
+    print("--- %s seconds ---" % (time.time() - start_time))
