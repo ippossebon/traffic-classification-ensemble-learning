@@ -1,0 +1,8 @@
+met mart sdev mreal sdev
+Voting 1.8 0.8944 1.2 1.0583
+AdaBoost	1.8 0.8944 1.28 1.04
+Bagging	1.8 0.8944 1.16 1.0072
+Stacking	1.8 0.8944 1.16 1.0072
+SVM	1.8 0.8944 1.2 1.0583
+KNN	1.8 0.8944 1.2 1.0583
+Decision-Tree 1.8 0.8944 1.16 0.9666
