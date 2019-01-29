@@ -1,6 +1,6 @@
 set boxwidth 0.5
 
-set xrange [-0.5:10]
+set xrange [-0.5:6]
 set boxwidth 0.25
 
 set style fill solid 1.0 border rgb 'black'

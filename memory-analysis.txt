@@ -1,0 +1,25 @@
+Análise de perfil de memória para cada método K = 5, r = 5
+
+1 mib = 1048576 bytes
+
+* dados em KBytes
+
+-> Dados reais
+Voting 393.216
+AdaBoost 57.672
+Bagging 152.044
+Stacking 152.044
+SVM 16.777
+KNN 147.849
+DT 20.9725
+
+
+
+-> Dados artificiais
+Voting - 327.155
+AdaBoost - 61.866
+Bagging - 155.189
+Stacking - 131.072
+SVM - 20.972
+KNN - 102.76
+DT - 16.777

@@ -8,6 +8,7 @@ from sklearn.ensemble import VotingClassifier, AdaBoostClassifier, BaggingClassi
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import KFold
+from sklearn.neural_network import MLPClassifier
 
 
 '''
@@ -24,6 +25,7 @@ Dados artificiais - 41 flows
 classifier_knn = KNeighborsClassifier(n_neighbors=3, weights='distance', algorithm='brute', p=2)
 classifier_svm = svm.SVC(kernel='linear')
 classifier_dt = tree.DecisionTreeClassifier(criterion='entropy')
+classifier_mlp = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=1)
 
 
 def main():
@@ -34,10 +36,17 @@ def main():
     artificial_normal_instances, artificial_anom_instances = getArtificialInstances()
 
     print('* Real instances *')
+    start_time = time.time()
     repeatedCrossValidation(real_normal_instances, real_anom_instances, 5, 5)
+    time_spent = time.time() - start_time
+    print('Time spent = %s seconds', time_spent)
 
     print('* Artificial instances *')
+    start_time = time.time()
     repeatedCrossValidation(artificial_normal_instances, artificial_anom_instances, 5, 5)
+    time_spent = time.time() - start_time
+    print('Time spent = %s seconds', time_spent)
+
 
 def getRealNormalInstances():
     normal_instances = []
@@ -99,8 +108,17 @@ def repeatedCrossValidation(normal_set, anom_set, k, repetitions):
     svm_statistics = []
     knn_statistics = []
     dt_statistics = []
+    mlp_statistics =[]
 
-    technique_name = ['- Voting -', '- AdaBoost -', '- Bagging -', '- Stacking -', '- SVM -', '- KNN -', '- DT -']
+    voting_time = []
+    adaboost_time = []
+    bagging_time = []
+    stacking_time = []
+    svm_time = []
+    knn_time = []
+    dt_time = []
+
+    technique_name = ['- Voting -', '- AdaBoost -', '- Bagging -', '- Stacking -', '- SVM -', '- KNN -', '- DT -', '- MLP -']
     j = 0
 
     for i in range(repetitions):
@@ -138,40 +156,89 @@ def repeatedCrossValidation(normal_set, anom_set, k, repetitions):
             classifier_knn.fit(train_set, train_set_classification)
             classifier_svm.fit(train_set, train_set_classification)
             classifier_dt.fit(train_set, train_set_classification)
+            classifier_mlp.fit(train_set, train_set_classification)
 
             # Avaliação
+            # start_time = time.time()
             predictions = voting(train_set, train_set_classification, test_set)
+            # time_spent = time.time() - start_time
+            # avg_time_spent_per_instance = float(time_spent)/float(len(test_set))
+            # voting_time.append(avg_time_spent_per_instance)
             statistics = evaluatePredictions(test_set, anom_set, predictions, anom_flows_in_evaluation_set)
             voting_statistics.append(statistics)
 
+            start_time = time.time()
             predictions = adaboost(train_set, train_set_classification, test_set)
+            # time_spent = time.time() - start_time
+            # avg_time_spent_per_instance = float(time_spent)/float(len(test_set))
+            # adaboost_time.append(avg_time_spent_per_instance)
             statistics = evaluatePredictions(test_set, anom_set, predictions, anom_flows_in_evaluation_set)
             adaboost_statistics.append(statistics)
 
+            start_time = time.time()
             predictions = bagging(train_set, train_set_classification, test_set)
+            # time_spent = time.time() - start_time
+            # avg_time_spent_per_instance = float(time_spent)/float(len(test_set))
+            # bagging_time.append(avg_time_spent_per_instance)
             statistics = evaluatePredictions(test_set, anom_set, predictions, anom_flows_in_evaluation_set)
             bagging_statistics.append(statistics)
 
+            # start_time = time.time()
             predictions = stacking(train_set, train_set_classification, test_set)
+            # time_spent = time.time() - start_time
+            # avg_time_spent_per_instance = float(time_spent)/float(len(test_set))
+            # stacking_time.append(avg_time_spent_per_instance)
             statistics = evaluatePredictions(test_set, anom_set, predictions, anom_flows_in_evaluation_set)
             stacking_statistics.append(statistics)
 
+            # start_time = time.time()
             predictions = svm(test_set)
+            # time_spent = time.time() - start_time
+            # avg_time_spent_per_instance = float(time_spent)/float(len(test_set))
+            # svm_time.append(avg_time_spent_per_instance)
             statistics = evaluatePredictions(test_set, anom_set, predictions, anom_flows_in_evaluation_set)
             svm_statistics.append(statistics)
 
+            # start_time = time.time()
             predictions = knn(test_set)
+            # time_spent = time.time() - start_time
+            # avg_time_spent_per_instance = float(time_spent)/float(len(test_set))
+            # knn_time.append(avg_time_spent_per_instance)
             statistics = evaluatePredictions(test_set, anom_set, predictions, anom_flows_in_evaluation_set)
             knn_statistics.append(statistics)
 
+            start_time = time.time()
             predictions = decisionTree(test_set)
+            # time_spent = time.time() - start_time
+            # avg_time_spent_per_instance = float(time_spent)/float(len(test_set))
+            # dt_time.append(avg_time_spent_per_instance)
             statistics = evaluatePredictions(test_set, anom_set, predictions, anom_flows_in_evaluation_set)
             dt_statistics.append(statistics)
 
+            start_time = time.time()
+            # predictions = neuralNetwork(test_set)
+            # time_spent = time.time() - start_time
+            # avg_time_spent_per_instance = float(time_spent)/float(len(test_set))
+            # mlp_time.append(avg_time_spent_per_instance)
+            statistics = evaluatePredictions(test_set, anom_set, predictions, anom_flows_in_evaluation_set)
+            mlp_statistics.append(statistics)
 
-    for statistics in [voting_statistics, adaboost_statistics, bagging_statistics, stacking_statistics, svm_statistics, knn_statistics, dt_statistics]:
+
+    #getTimeMeasurements(voting_time, adaboost_time, bagging_time, stacking_time, svm_time, knn_time, dt_time)
+
+    for statistics in [voting_statistics, adaboost_statistics, bagging_statistics, stacking_statistics, svm_statistics, knn_statistics, dt_statistics, mlp_statistics]:
         print(technique_name[j])
         calculateMeanStatistics(statistics, k * repetitions)
+        j = j + 1
+
+
+def getTimeMeasurements(voting_time, adaboost_time, bagging_time, stacking_time, svm_time, knn_time, dt_time):
+    technique_name = ['- Voting -', '- AdaBoost -', '- Bagging -', '- Stacking -', '- SVM -', '- KNN -', '- DT -']
+    j = 0
+
+    for statistics_time in [voting_time, adaboost_time, bagging_time, stacking_time, svm_time, knn_time, dt_time]:
+        average_time_per_instance = float(sum(statistics_time)) / float(len(statistics_time))
+        print('%s = %s seconds per instance', technique_name[j], average_time_per_instance)
         j = j + 1
 
 
@@ -450,7 +517,15 @@ def decisionTree(evaluation_set):
     return predictions
 
 
+# multi-layer perceptron (MLP) algorithm that trains using Backpropagation.
+def neuralNetwork(evaluation_set):
+    global classifier_mlp
+    result = classifier_mlp.predict(evaluation_set)
+
+    predictions = []
+    predictions = list(result.tolist())
+
+    return predictions
+
 if __name__ == '__main__':
-    start_time = time.time()
     main()
-    print("--- %s seconds ---" % (time.time() - start_time))
