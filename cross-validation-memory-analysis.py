@@ -32,14 +32,14 @@ def main():
     real_anom_instances = getRealAnomalousInstances() # 7 instancias
 
     # normal = 32, anom = 9
-    artificial_normal_instances, artificial_anom_instances = getArtificialInstances()
+    # artificial_normal_instances, artificial_anom_instances = getArtificialInstances()
 
-    # print('* Real instances *')
-    # repeatedCrossValidation(real_normal_instances, real_anom_instances, 5, 5)
+    print('* Real instances *')
+    repeatedCrossValidation(real_normal_instances, real_anom_instances, 5, 5)
 
 
-    print('* Artificial instances *')
-    repeatedCrossValidation(artificial_normal_instances, artificial_anom_instances, 5, 5)
+    # print('* Artificial instances *')
+    # repeatedCrossValidation(artificial_normal_instances, artificial_anom_instances, 5, 5)
 
 
 def getRealNormalInstances():
@@ -103,7 +103,7 @@ def repeatedCrossValidation(normal_set, anom_set, k, repetitions):
     knn_statistics = []
     dt_statistics = []
 
-    technique_name = ['- Voting -', '- AdaBoost -', '- Bagging -', '- Stacking -', '- SVM -', '- KNN -', '- DT -']
+    technique_name = ['- Voting -', '- AdaBoost -', '- Bagging -', '- Stacking -', '- SVM -', '- KNN -', '- DT -', '- MLP -']
     j = 0
 
     for i in range(repetitions):
@@ -144,14 +144,14 @@ def repeatedCrossValidation(normal_set, anom_set, k, repetitions):
             classifier_mlp.fit(train_set, train_set_classification)
 
             # # Avaliação
-            predictions = voting(train_set, train_set_classification, test_set)
+            # predictions = voting(train_set, train_set_classification, test_set)
             # predictions = adaboost(train_set, train_set_classification, test_set)
             # predictions = bagging(train_set, train_set_classification, test_set)
             # predictions = stacking(train_set, train_set_classification, test_set)
             # predictions = svm(test_set)
             # predictions = knn(test_set)
             # predictions = decisionTree(test_set)
-            # predictions = neuralNetwork(test_set)
+            predictions = neuralNetwork(test_set)
 
 def voting(training_set, training_set_classification, evaluation_set):
     meta_learner = VotingClassifier(estimators=[

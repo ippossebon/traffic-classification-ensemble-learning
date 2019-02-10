@@ -216,7 +216,7 @@ def repeatedCrossValidation(normal_set, anom_set, k, repetitions):
             dt_statistics.append(statistics)
 
             start_time = time.time()
-            # predictions = neuralNetwork(test_set)
+            predictions = neuralNetwork(test_set)
             # time_spent = time.time() - start_time
             # avg_time_spent_per_instance = float(time_spent)/float(len(test_set))
             # mlp_time.append(avg_time_spent_per_instance)
@@ -247,10 +247,6 @@ def evaluatePredictions(test_set, anom_set, predictions, anom_flows_in_evaluatio
     false_positives_sum = 0
     true_negatives_sum = 0
     true_positives_sum = 0
-    recall_sum = 0
-    precision_sum = 0
-    accuracy_sum = 0
-    error_rate_sum = 0
 
     classified_as_anom_count = 0
 
@@ -296,6 +292,11 @@ def evaluatePredictions(test_set, anom_set, predictions, anom_flows_in_evaluatio
     # Calcula a taxa de erro (error rate)
     error_rate = (false_negatives_sum + false_positives_sum) / len(predictions)
 
+    if (precision + recall) == 0:
+        f1_score = 0
+    else:
+        f1_score = (precision*recall)/(precision+recall)
+
     # Retorna uma lista com todas as estatísticas
     return [
         false_negatives_sum,
@@ -305,7 +306,8 @@ def evaluatePredictions(test_set, anom_set, predictions, anom_flows_in_evaluatio
         recall,
         precision,
         accuracy,
-        error_rate
+        error_rate,
+        f1_score
     ]
 
 
@@ -327,6 +329,8 @@ def calculateMeanStatistics(statisctics_set, k):
     accuracy_count = 0
     error_rates = []
     error_rate_count = 0
+    f1_scores = []
+    f1_score_count = 0
 
     variance = 0
     std_deviation = 0
@@ -356,6 +360,9 @@ def calculateMeanStatistics(statisctics_set, k):
         error_rate_count = error_rate_count + statistics[7]
         error_rates.append(statistics[7])
 
+        f1_score_count = f1_score_count + statistics[8]
+        f1_scores.append(statistics[8])
+
     # Média dos valores
     false_negatives_mean = false_negatives_count/k
     false_positives_mean = false_positives_count/k
@@ -365,6 +372,8 @@ def calculateMeanStatistics(statisctics_set, k):
     precision_mean = precision_count/k
     accuracy_mean = accuracy_count/k
     error_rate_mean = error_rate_count/k
+    f1_score_mean = f1_score_count/k
+
 
     # Cálculo da variância
     false_negatives_variance = calculateVariance(false_negatives, false_negatives_mean)
@@ -375,6 +384,7 @@ def calculateMeanStatistics(statisctics_set, k):
     precision_variance = calculateVariance(precisions, precision_mean)
     accuracy_variance = calculateVariance(accuracys, accuracy_mean)
     error_rate_variance = calculateVariance(error_rates, error_rate_mean)
+    f1_score_variance = calculateVariance(f1_scores, f1_score_mean)
 
     # Cálculo do desvio padrão
     false_negatives_std_deviation = sqrt(false_negatives_variance)
@@ -385,6 +395,7 @@ def calculateMeanStatistics(statisctics_set, k):
     precision_std_deviation = sqrt(precision_variance)
     accuracy_std_deviation = sqrt(accuracy_variance)
     error_rate_std_deviation = sqrt(error_rate_variance)
+    f1_score_std_deviation = sqrt(f1_score_variance)
 
     # Mostra resultados
     print('Falsos negativos: {0} ; var = {1} ; dp = {2}'.format(false_negatives_mean, false_negatives_variance, false_negatives_std_deviation))
@@ -395,6 +406,7 @@ def calculateMeanStatistics(statisctics_set, k):
     print('Precisão: {0} ; var = {1} ; dp = {2}'.format(precision_mean, precision_variance, precision_std_deviation))
     print('Acurácia: {0} ; var = {1} ; dp = {2}'.format(accuracy_mean, accuracy_variance, accuracy_std_deviation))
     print('Taxa de erro: {0}; var = {1}; dp = {2}'.format(error_rate_mean, error_rate_variance, error_rate_std_deviation))
+    print('F1-score: {0}; var = {1}; dp = {2}'.format(f1_score_mean, f1_score_variance, f1_score_std_deviation))
 
 
 def calculateVariance(list_values, mean):

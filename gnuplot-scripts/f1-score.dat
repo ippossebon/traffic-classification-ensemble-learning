@@ -1,10 +1,9 @@
-(precision*recall)/(precision+recall)
-met mart mreal
-Voting 0.9911 0.0435
-AdaBoost	0.9911 0.0019
-Bagging	0.9867 0.0479
-Stacking	0.9911 0.0019
-SVM	0.9911 0.0435
-KNN	0.9911 0.0435
-Decision-Tree 0.9911 0.0435
-MLP 0.9911 0.0435
+met            mart   mreal
+Voting         0.4827 0.3835
+AdaBoost	     0.4827 0.6768
+Bagging	       0.4827 0.3817
+Stacking	     0.4827 0.3817
+SVM	           0.4827 0.3835
+KNN	           0.4827 0.3835
+Decision-Tree  0.4827 0.3835
+MLP            0.43   0.4071

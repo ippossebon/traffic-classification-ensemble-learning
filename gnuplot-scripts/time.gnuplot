@@ -1,4 +1,4 @@
-set yrange [0:70]
+set yrange [-1:70]
 
 set boxwidth 0.25
 
@@ -16,6 +16,7 @@ plot "time.dat" using 1:2 title 'Voting' with lines lw 5,\
      "time.dat" using 1:6 title 'SVM' with lines lw 5,\
      "time.dat" using 1:7 title 'KNN' with lines lw 5,\
      "time.dat" using 1:8 title 'Decision Tree' with lines lw 5,\
+     "time.dat" using 1:9 title 'MLP' with lines lw 5,\
 
 set terminal png size 900,580 font "Helvetica"
 set output 'time.png'
