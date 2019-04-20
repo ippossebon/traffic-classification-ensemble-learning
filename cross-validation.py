@@ -32,18 +32,9 @@ def main():
     real_normal_instances = getRealNormalInstances() # 100 instancias
     real_anom_instances = getRealAnomalousInstances() # 7 instancias
 
-    # normal = 32, anom = 9
-    artificial_normal_instances, artificial_anom_instances = getArtificialInstances()
-
     print('* Real instances *')
     start_time = time.time()
     repeatedCrossValidation(real_normal_instances, real_anom_instances, 5, 5)
-    time_spent = time.time() - start_time
-    print('Time spent = %s seconds', time_spent)
-
-    print('* Artificial instances *')
-    start_time = time.time()
-    repeatedCrossValidation(artificial_normal_instances, artificial_anom_instances, 5, 5)
     time_spent = time.time() - start_time
     print('Time spent = %s seconds', time_spent)
 
